@@ -235,33 +235,389 @@ def analyze_link(url):
     }
 
 
+
+
+
+EMAIL_SCAM_PATTERNS = [
+
+
+    {
+
+
+        "name": "Free Email Domain",
+
+
+        "weight": 40,
+
+
+        "domains": ["gmail.com", "yahoo.com", "outlook.com", "aol.com"],
+
+
+        "explanation": "The email was sent from a free email domain, which is uncommon for legitimate companies.",
+
+
+        "advice": "Verify the sender's email address and cross-reference it with the company's official domain."
+
+
+    },
+
+
+    {
+
+
+        "name": "Payment Request",
+
+
+        "weight": 50,
+
+
+        "keywords": ["payment", "fee", "charge", "cost", "send money", "Ksh", "KES"],
+
+
+        "explanation": "The email requests payment, which is a major red flag for job scams.",
+
+
+        "advice": "Never send money for a job application or offer."
+
+
+    },
+
+
+    {
+
+
+        "name": "Urgency Manipulation",
+
+
+        "weight": 25,
+
+
+        "keywords": ["urgent", "immediately", "now", "limited time", "act fast"],
+
+
+        "explanation": "The email creates a sense of urgency to pressure you into making a quick decision.",
+
+
+        "advice": "Take your time to evaluate any job offer. High-pressure tactics are suspicious."
+
+
+    },
+
+
+    {
+
+
+        "name": "Poor Grammar / Unusual Formatting",
+
+
+        "weight": 15,
+
+
+        "explanation": "The email contains grammatical errors or has unusual formatting, which can be a sign of a scam.",
+
+
+        "advice": "Read emails carefully and be wary of unprofessional communication."
+
+
+    }
+
+
+]
+
+
+
+
+
+
+
+
+def analyze_email(email_text, sender_email):
+
+
+    """
+
+
+    Analyzes an email for scam patterns.
+
+
+    """
+
+
+    risk_score = 0
+
+
+    detected_patterns = []
+
+
+    explanations = []
+
+
+    advices = []
+
+
+
+
+
+    # 1. Analyze sender's email domain
+
+
+    domain_info = tldextract.extract(sender_email)
+
+
+    domain = f"{domain_info.domain}.{domain_info.suffix}"
+
+
+    for pattern in EMAIL_SCAM_PATTERNS:
+
+
+        if "domains" in pattern:
+
+
+            if domain in pattern["domains"]:
+
+
+                risk_score += pattern["weight"]
+
+
+                detected_patterns.append(pattern["name"])
+
+
+                explanations.append(pattern["explanation"])
+
+
+                advices.append(pattern["advice"])
+
+
+
+
+
+    # 2. Analyze email content
+
+
+    for pattern in EMAIL_SCAM_PATTERNS:
+
+
+        if "keywords" in pattern:
+
+
+            for keyword in pattern["keywords"]:
+
+
+                if keyword.lower() in email_text.lower():
+
+
+                    risk_score += pattern["weight"]
+
+
+                    detected_patterns.append(pattern["name"])
+
+
+                    explanations.append(pattern["explanation"])
+
+
+                    advices.append(pattern["advice"])
+
+
+                    break 
+
+
+
+
+
+    # 3. Basic grammar check (example)
+
+
+    # In a real application, a more sophisticated library could be used.
+
+
+    # For now, we'll just check for a few common mistakes.
+
+
+    common_mistakes = ["kindley", "ur", "pls"]
+
+
+    for mistake in common_mistakes:
+
+
+        if mistake in email_text.lower():
+
+
+            pattern = EMAIL_SCAM_PATTERNS[3]
+
+
+            risk_score += pattern["weight"]
+
+
+            detected_patterns.append(pattern["name"])
+
+
+            explanations.append(pattern["explanation"])
+
+
+            advices.append(pattern["advice"])
+
+
+            break
+
+
+            
+
+
+
+
+
+    # Cap the risk score at 100
+
+
+    risk_score = min(risk_score, 100)
+
+
+
+
+
+    if risk_score <= 30:
+
+
+        risk_level = "LOW"
+
+
+    elif risk_score <= 60:
+
+
+        risk_level = "MEDIUM"
+
+
+    else:
+
+
+        risk_level = "HIGH"
+
+
+
+
+
+    explanation = " ".join(explanations) if explanations else "No significant risk patterns were detected."
+
+
+    advice = " ".join(advices) if advices else "Always remain cautious and verify employer details."
+
+
+
+
+
+    return {
+
+
+        "risk_level": risk_level,
+
+
+        "risk_score": risk_score,
+
+
+        "detected_patterns": list(set(detected_patterns)),
+
+
+        "explanation": explanation,
+
+
+        "advice": advice
+
+
+    }
+
+
+
+
+
+
+
+
 def _fetch_url_content(url):
+
+
     """
+
+
     Safely fetches the content of a URL.
+
+
     """
+
+
     try:
+
+
         response = requests.get(url, timeout=5)
+
+
         response.raise_for_status()  # Raise an exception for bad status codes
+
+
         return response.content
+
+
     except requests.exceptions.RequestException as e:
+
+
         raise ValueError(f"Could not fetch URL: {e}")
 
+
+
+
+
 def _extract_text_from_html(html_content):
+
+
     """
+
+
     Extracts visible text from HTML content.
+
+
     """
+
+
     soup = BeautifulSoup(html_content, "html.parser")
+
+
     # Remove script and style elements
+
+
     for script in soup(["script", "style"]):
+
+
         script.decompose()
+
+
     return soup.get_text(separator=" ", strip=True)
 
+
+
+
+
 def _get_domain_age_in_days(domain):
+
+
     """
+
+
     Mock function to get the age of a domain in days.
+
+
     In a real application, this would use a WHOIS service.
+
+
     """
+
+
     # For demonstration purposes, we'll return a fixed value.
+
+
     # To simulate a new domain, you could return a value less than 90.
+
+
     return 365
+
+
+
 

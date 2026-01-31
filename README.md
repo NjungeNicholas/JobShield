@@ -174,6 +174,72 @@ The scam detection engine is rule-based and analyzes messages for the following 
 
 Each detected pattern contributes a weighted score to the overall risk assessment. The final score determines the risk level and the corresponding advice.
 
+### `POST /api/analyze-email`
+
+This endpoint analyzes a given email for potential scam patterns.
+
+#### Request Body
+
+```json
+{
+  "email_text": "string",
+  "sender_email": "string"
+}
+```
+
+- `email_text` (string, required): The text of the email to be analyzed.
+- `sender_email` (string, required): The email address of the sender.
+
+#### Example Request
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"email_text": "Dear candidate, please pay KES 1500 to secure your spot...", "sender_email": "hr.company@gmail.com"}' http://127.0.0.1:8000/api/analyze-email
+```
+
+#### Response Body
+
+```json
+{
+  "risk_level": "string",
+  "risk_score": "integer",
+  "detected_patterns": ["string"],
+  "explanation": "string",
+  "advice": "string"
+}
+```
+
+- `risk_level`: The calculated risk level (LOW, MEDIUM, or HIGH).
+- `risk_score`: A numerical score from 0 to 100.
+- `detected_patterns`: A list of scam patterns found in the email.
+- `explanation`: An explanation of why the email is considered risky.
+- `advice`: Recommendations on how to proceed safely.
+
+#### Example Response
+
+```json
+{
+    "risk_level": "HIGH",
+    "risk_score": 80,
+    "detected_patterns": [
+        "Free Email Domain",
+        "Payment Request",
+        "Urgency Manipulation"
+    ],
+    "explanation": "This email comes from a free email domain, asks for money, and pressures you to act quickly. Legitimate employers do not charge fees or force immediate responses.",
+    "advice": "Do not send money. Verify employer information on official websites. Report this email as suspicious."
+}
+```
+
+## Email Analysis Logic
+
+The email analysis logic includes the following checks:
+
+- **Free Email Domain**: Checks if the sender's email is from a free provider (e.g., Gmail, Yahoo).
+- **Payment Instructions**: Scans the email body for payment-related keywords.
+- **Urgency Manipulation**: Identifies high-pressure language.
+- **No Official Contact Info**: Checks for the absence of a physical address or phone number.
+- **Poor Grammar / Unusual Formatting**: Detects common grammatical mistakes and unusual text formatting.
+
 ## Website Analysis Logic
 
 The website analysis logic includes the following checks:
