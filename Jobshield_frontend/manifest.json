@@ -1,27 +1,50 @@
 {
   "manifest_version": 3,
   "name": "JobShield",
-  "version": "1.0.0",
-  "description": "Protects students and fresh graduates from online job scams by analyzing job posts.",
+  "version": "2.0.0",
+  "description": "Protects students and fresh graduates from online job scams with automatic scam phrase detection and analysis.",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "contextMenus",
+    "storage",
+    "notifications"
   ],
   "host_permissions": [
     "<all_urls>",
     "http://localhost:8000/*",
+    "http://127.0.0.1:8000/*",
     "https://*/api/*"
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "JobShield - Job Scam Protection"
+    "default_title": "JobShield - Job Scam Protection",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"],
-      "css": ["styles.css"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ],
       "run_at": "document_idle"
     }
-  ]
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
 }

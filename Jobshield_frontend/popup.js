@@ -142,39 +142,58 @@
   }
 
   /**
-   * POST to analyze-message endpoint
+   * POST to analyze-message endpoint (via background script)
    */
   function analyzeMessage(messageText) {
-    return fetch(ENDPOINTS.message, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message_text: messageText })
-    }).then(handleResponse);
+    return new Promise(function (resolve, reject) {
+      chrome.runtime.sendMessage({
+        action: 'analyzeMessage',
+        text: messageText
+      }, function (response) {
+        if (response && response.error) {
+          reject(new Error(response.error));
+        } else {
+          resolve(response);
+        }
+      });
+    });
   }
 
   /**
-   * POST to analyze-link endpoint
+   * POST to analyze-link endpoint (via background script)
    */
   function analyzeLink(url) {
-    return fetch(ENDPOINTS.link, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: url })
-    }).then(handleResponse);
+    return new Promise(function (resolve, reject) {
+      chrome.runtime.sendMessage({
+        action: 'analyzeLink',
+        url: url
+      }, function (response) {
+        if (response && response.error) {
+          reject(new Error(response.error));
+        } else {
+          resolve(response);
+        }
+      });
+    });
   }
 
   /**
-   * POST to analyze-email endpoint
+   * POST to analyze-email endpoint (via background script)
    */
   function analyzeEmail(emailText, senderEmail) {
-    return fetch(ENDPOINTS.email, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email_text: emailText,
-        sender_email: senderEmail
-      })
-    }).then(handleResponse);
+    return new Promise(function (resolve, reject) {
+      chrome.runtime.sendMessage({
+        action: 'analyzeEmail',
+        emailText: emailText,
+        senderEmail: senderEmail
+      }, function (response) {
+        if (response && response.error) {
+          reject(new Error(response.error));
+        } else {
+          resolve(response);
+        }
+      });
+    });
   }
 
   /**
@@ -382,7 +401,71 @@
       });
   }
 
+  // ============================================================================
+  // SETTINGS MANAGEMENT
+  // ============================================================================
+
+  const settingsBtn = document.getElementById('settingsBtn');
+  const settingsPanel = document.getElementById('settingsPanel');
+  const autoHighlightToggle = document.getElementById('autoHighlightToggle');
+  const showTooltipsToggle = document.getElementById('showTooltipsToggle');
+
+  /**
+   * Toggle settings panel visibility
+   */
+  function toggleSettings() {
+    settingsPanel.classList.toggle('hidden');
+  }
+
+  /**
+   * Load settings from background and apply to UI
+   */
+  function loadSettings() {
+    chrome.runtime.sendMessage({ action: 'getSettings' }, function (settings) {
+      if (settings) {
+        autoHighlightToggle.checked = settings.autoHighlight !== false;
+        showTooltipsToggle.checked = settings.showTooltips !== false;
+      }
+    });
+  }
+
+  /**
+   * Save settings to background
+   */
+  function saveSettings() {
+    const settings = {
+      autoHighlight: autoHighlightToggle.checked,
+      showTooltips: showTooltipsToggle.checked,
+      ignoredPhrases: [] // Can be expanded later
+    };
+
+    chrome.runtime.sendMessage({
+      action: 'updateSettings',
+      settings: settings
+    }, function (response) {
+      if (response && response.success) {
+        console.log('Settings saved successfully');
+      }
+    });
+  }
+
   // Add event listeners
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', toggleSettings);
+  }
+
+  if (autoHighlightToggle) {
+    autoHighlightToggle.addEventListener('change', saveSettings);
+  }
+
+  if (showTooltipsToggle) {
+    showTooltipsToggle.addEventListener('change', saveSettings);
+  }
+
+  // Load settings on popup open
+  loadSettings();
+
+  // Add analysis button event listeners
   analyzeJobBtn.addEventListener('click', runJobPostAnalysis);
   analyzeLinkBtn.addEventListener('click', runLinkAnalysis);
   analyzeEmailBtn.addEventListener('click', runEmailAnalysis);

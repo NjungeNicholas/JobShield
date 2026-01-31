@@ -12,9 +12,35 @@
   <div class="popup-container">
     <!-- Header -->
     <header class="popup-header">
-      <h1>🛡️ JobShield</h1>
-      <p class="tagline">Advanced Job Scam Protection</p>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h1>🛡️ JobShield</h1>
+          <p class="tagline">Advanced Job Scam Protection</p>
+        </div>
+        <button id="settingsBtn" class="settings-btn" aria-label="Settings">⚙️</button>
+      </div>
     </header>
+
+    <!-- Settings Panel (hidden by default) -->
+    <div id="settingsPanel" class="settings-panel hidden">
+      <h3 style="margin: 0 0 12px 0; font-size: 14px; color: var(--gray-800);">Settings</h3>
+      <div class="setting-item">
+        <label class="toggle-label">
+          <input type="checkbox" id="autoHighlightToggle" checked>
+          <span class="toggle-switch"></span>
+          <span class="toggle-text">Auto-highlight scam phrases</span>
+        </label>
+        <p class="setting-description">Automatically detect and highlight suspicious phrases on web pages</p>
+      </div>
+      <div class="setting-item">
+        <label class="toggle-label">
+          <input type="checkbox" id="showTooltipsToggle" checked>
+          <span class="toggle-switch"></span>
+          <span class="toggle-text">Show tooltips</span>
+        </label>
+        <p class="setting-description">Display educational tooltips when hovering over highlighted phrases</p>
+      </div>
+    </div>
 
     <!-- Tab Navigation -->
     <div class="tab-navigation">

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobConnect Kenya - Find Your Next Opportunity</title>
+    <style>
+        /* LinkedIn-Inspired Professional Design */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f3f2ef;
+            color: rgba(0, 0, 0, 0.9);
+        }
+
+        /* Top Navigation Bar - LinkedIn Style */
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1128px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            height: 52px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #0a66c2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header p {
+            display: none;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1128px;
+            margin: 24px auto;
+            padding: 0 24px;
+        }
+
+        /* Demo Banner - LinkedIn Alert Style */
+        .demo-banner {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+            margin-bottom: 8px;
+        }
+
+        .demo-banner h2 {
+            color: #0a66c2;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .demo-banner p {
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Instructions Card */
+        .instructions {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            padding: 20px 24px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+            margin-bottom: 8px;
+        }
+
+        .instructions h3 {
+            color: rgba(0, 0, 0, 0.9);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 14px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .instructions strong {
+            color: rgba(0, 0, 0, 0.9);
+            font-weight: 600;
+        }
+
+        /* Job Cards Grid */
+        .job-grid {
+            display: block;
+        }
+
+        .job-card {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            padding: 20px 24px;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.2s ease;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .job-card:hover {
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Risk indicators - subtle left border */
+        .job-card.scam-high::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #c92a2a;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .job-card.scam-medium::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #f08c00;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .job-card.legitimate::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #37b24d;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .job-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0a66c2;
+            margin-bottom: 4px;
+            cursor: pointer;
+        }
+
+        .job-title:hover {
+            text-decoration: underline;
+        }
+
+        .company-name {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.6);
+            font-weight: 400;
+        }
+
+        /* Job Meta Info */
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            margin: 12px 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .meta-item {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Job Description */
+        .job-description {
+            margin: 16px 0;
+            color: rgba(0, 0, 0, 0.9);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .job-description p {
+            margin-bottom: 12px;
+        }
+
+        .job-description strong {
+            font-weight: 600;
+        }
+
+        /* Requirements Section */
+        .job-requirements {
+            margin: 16px 0;
+        }
+
+        .job-requirements h4 {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.9);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .job-requirements ul {
+            margin-left: 20px;
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 14px;
+        }
+
+        .job-requirements li {
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        /* Contact Info */
+        .contact-info {
+            background: #f3f2ef;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .contact-info strong {
+            color: rgba(0, 0, 0, 0.9);
+            font-weight: 600;
+        }
+
+        /* Apply Button - LinkedIn Style */
+        .apply-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #0a66c2;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 16px;
+            transition: background 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .apply-btn:hover {
+            background: #004182;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-urgent {
+            background: #fef3f2;
+            color: #c92a2a;
+            border: 1px solid #ffe5e5;
+        }
+
+        .badge-new {
+            background: #e7f5ff;
+            color: #1864ab;
+            border: 1px solid #d0ebff;
+        }
+
+        .badge-verified {
+            background: #ebfbee;
+            color: #2b8a3e;
+            border: 1px solid #d3f9d8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+                margin: 16px auto;
+            }
+
+            .header-content {
+                padding: 0 16px;
+            }
+
+            .job-card {
+                padding: 16px;
+            }
+
+            .job-title {
+                font-size: 18px;
+            }
+
+            .job-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1>🔍 JobConnect Kenya</h1>
+            <p>Your trusted partner in finding genuine employment opportunities</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Demo Banner -->
+        <div class="demo-banner">
+            <h2>🛡️ JobShield Protection Active - Demo Mode</h2>
+            <p>This page contains realistic job scam examples. Watch JobShield automatically highlight suspicious
+                phrases!</p>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>📋 Demo Instructions</h3>
+            <ol>
+                <li><strong>Auto-Highlighting:</strong> Scam phrases are automatically highlighted in red/orange/yellow
+                </li>
+                <li><strong>Tooltips:</strong> Hover over any highlighted phrase to see why it's suspicious</li>
+                <li><strong>Text Selection:</strong> Select any job description text to see the floating analyze button
+                </li>
+                <li><strong>Context Menu:</strong> Right-click selected text → "🛡️ Analyze with JobShield" for full
+                    analysis</li>
+                <li><strong>Extension Popup:</strong> Click the JobShield icon to analyze the entire page or toggle
+                    settings</li>
+            </ol>
+        </div>
+
+        <!-- Job Listings Grid -->
+        <div class="job-grid">
+
+            <!-- SCAM JOB 1: High Risk - Multiple Red Flags -->
+            <div class="job-card scam-high">
+                <div class="job-header">
+                    <div>
+                        <h2 class="job-title">Data Entry Operator - Work From Home</h2>
+                        <p class="company-name">Global Digital Solutions Ltd</p>
+                    </div>
+                    <div>
+                        <span class="badge badge-urgent">URGENT</span>
+                    </div>
+                </div>
+
+                <div class="job-meta">
+                    <span class="meta-item">💰 Salary: KES 80,000 - 120,000/month</span>
+                    <span class="meta-item">📍 Location: Remote</span>
+                    <span class="meta-item">⏰ Posted: Today</span>
+                </div>
+
+                <div class="job-description">
+                    <p>
+                        <strong>Exciting opportunity!</strong> We are urgently looking for serious candidates for a
+                        guaranteed home-based position.
+                        This is easy money with no interview required! Earn up to KES 120,000 monthly working from the
+                        comfort of your home.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        To secure your position immediately, please pay a small registration fee of KES 2,500 for
+                        training materials
+                        and software activation. This is a limited time offer with only 5 slots remaining. Act now
+                        before positions are filled!
+                    </p>
+                </div>
+
+                <div class="job-requirements">
+                    <h4>Requirements:</h4>
+                    <ul>
+                        <li>No experience needed - we provide full training</li>
+                        <li>Just a smartphone or computer</li>
+                        <li>Ability to work 2-3 hours daily</li>
+                        <li>Must be available to start immediately</li>
+                    </ul>
+                </div>
+
+                <div class="contact-info">
+                    <strong>How to Apply:</strong><br>
+                    Send KES 2,500 registration fee via M-PESA to 0712345678, then contact us on WhatsApp at 0798765432
+                    for immediate processing.
+                    Payment must be made today to guarantee your spot!
+                </div>
+
+                <a href="#" class="apply-btn">Apply Now - Limited Slots!</a>
+            </div>
+
+            <!-- SCAM JOB 2: Medium-High Risk - Urgency + Off-Platform -->
+            <div class="job-card scam-high">
+                <div class="job-header">
+                    <div>
+                        <h2 class="job-title">Customer Service Representative - Remote Position</h2>
+                        <p class="company-name">International Support Services</p>
+                    </div>
+                    <div>
+                        <span class="badge badge-urgent">URGENT</span>
+                    </div>
+                </div>
+
+                <div class="job-meta">
+                    <span class="meta-item">💰 Salary: USD 1,500 - 2,000/month</span>
+                    <span class="meta-item">📍 Location: Work From Anywhere</span>
+                    <span class="meta-item">⏰ Posted: 2 hours ago</span>
+                </div>
+
+                <div class="job-description">
+                    <p>
+                        Join our rapidly expanding team! We need dedicated individuals to handle customer inquiries via
+                        email and chat.
+                        This is a 100% guaranteed position for the right candidates. No prior experience necessary as we
+                        offer
+                        comprehensive paid training.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        Due to urgent staffing needs, we are hiring immediately. Successful applicants will start
+                        earning within 48 hours!
+                        Don't miss this opportunity - we have limited positions available and they're filling up fast.
+                    </p>
+                </div>
+
+                <div class="job-requirements">
+                    <h4>What We Offer:</h4>
+                    <ul>
+                        <li>Guaranteed monthly income of $1,500+</li>
+                        <li>Work from home flexibility</li>
+                        <li>No experience required</li>
+                        <li>Weekly payments via Western Union or MoneyGram</li>
+                        <li>Join today, get paid this week!</li>
+                    </ul>
+                </div>
+
+                <div class="contact-info">
+                    <strong>To Apply:</strong><br>
+                    For faster processing, please text me directly on WhatsApp: +1-555-0123.
+                    You can also reach us on Telegram @jobsupport24. Hurry - positions closing soon!
+                </div>
+
+                <a href="#" class="apply-btn">Apply Immediately</a>
+            </div>
+
+            <!-- SCAM JOB 3: Medium Risk - Payment + Unrealistic Promises -->
+            <div class="job-card scam-medium">
+                <div class="job-header">
+                    <div>
+                        <h2 class="job-title">Online Survey Taker - Earn Extra Income</h2>
+                        <p class="company-name">Survey Masters Global</p>
+                    </div>
+                    <div>
+                        <span class="badge badge-new">NEW</span>
+                    </div>
+                </div>
+
+                <div class="job-meta">
+                    <span class="meta-item">💰 Earnings: KES 50,000 - 100,000/month</span>
+                    <span class="meta-item">📍 Location: Online</span>
+                    <span class="meta-item">⏰ Part-time/Flexible</span>
+                </div>
+
+                <div class="job-description">
+                    <p>
+                        Make money from your phone! Take simple online surveys and earn guaranteed income. Our members
+                        make between
+                        KES 50,000 to KES 100,000 monthly by dedicating just 1-2 hours per day. No special skills
+                        required!
+                    </p>
+                    <p style="margin-top: 12px;">
+                        To access our premium survey platform, there's a one-time activation fee of KES 1,999. This
+                        small investment
+                        gives you unlimited access to high-paying surveys. Start earning within 24 hours!
+                    </p>
+                </div>
+
+                <div class="job-requirements">
+                    <h4>Benefits:</h4>
+                    <ul>
+                        <li>100% guaranteed earnings</li>
+                        <li>Work anytime, anywhere</li>
+                        <li>Get paid weekly to your M-PESA</li>
+                        <li>No interview, no CV needed</li>
+                        <li>Join thousands of satisfied members!</li>
+                    </ul>
+                </div>
+
+                <div class="contact-info">
+                    <strong>Getting Started:</strong><br>
+                    Pay the activation fee of KES 1,999 to M-PESA number 0722334455, then call me on 0733445566 to
+                    activate your account.
+                    Limited spots available - register today!
+                </div>
+
+                <a href="#" class="apply-btn">Start Earning Now</a>
+            </div>
+
+            <!-- LEGITIMATE JOB 1: Professional, Realistic -->
+            <div class="job-card legitimate">
+                <div class="job-header">
+                    <div>
+                        <h2 class="job-title">Software Developer - Full Stack</h2>
+                        <p class="company-name">TechVision Solutions Ltd</p>
+                    </div>
+                    <div>
+                        <span class="badge badge-verified">✓ Verified</span>
+                    </div>
+                </div>
+
+                <div class="job-meta">
+                    <span class="meta-item">💰 Salary: KES 120,000 - 180,000/month</span>
+                    <span class="meta-item">📍 Nairobi, Kenya</span>
+                    <span class="meta-item">⏰ Full-time</span>
+                </div>
+
+                <div class="job-description">
+                    <p>
+                        We are seeking an experienced Full Stack Developer to join our growing engineering team. You
+                        will work on
+                        developing and maintaining web applications using modern technologies including React, Node.js,
+                        and PostgreSQL.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        The ideal candidate will have a strong foundation in software development principles, experience
+                        with agile
+                        methodologies, and a passion for creating high-quality, scalable applications.
+                    </p>
+                </div>
+
+                <div class="job-requirements">
+                    <h4>Requirements:</h4>
+                    <ul>
+                        <li>Bachelor's degree in Computer Science or related field</li>
+                        <li>3+ years of professional software development experience</li>
+                        <li>Proficiency in JavaScript, React, and Node.js</li>
+                        <li>Experience with RESTful APIs and database design</li>
+                        <li>Strong problem-solving and communication skills</li>
+                    </ul>
+                </div>
+
+                <div class="contact-info">
+                    <strong>Application Process:</strong><br>
+                    Please submit your CV and portfolio through our careers portal at www.techvision.co.ke/careers.
+                    Shortlisted candidates will be contacted for interviews within two weeks. Email: hr@techvision.co.ke
+                </div>
+
+                <a href="#" class="apply-btn">Submit Application</a>
+            </div>
+
+            <!-- SCAM JOB 4: High Risk - Multiple Urgency Tactics -->
+            <div class="job-card scam-high">
+                <div class="job-header">
+                    <div>
+                        <h2 class="job-title">Personal Assistant to CEO - Urgent Hiring</h2>
+                        <p class="company-name">Executive Business Group</p>
+                    </div>
+                    <div>
+                        <span class="badge badge-urgent">URGENT</span>
+                    </div>
+                </div>
+
+                <div class="job-meta">
+                    <span class="meta-item">💰 Salary: KES 150,000/month</span>
+                    <span class="meta-item">📍 Nairobi CBD</span>
+                    <span class="meta-item">⏰ Posted: 1 hour ago</span>
+                </div>
+
+                <div class="job-description">
+                    <p>
+                        Exciting opportunity! Our CEO needs a reliable personal assistant ASAP. This urgent position
+                        offers guaranteed
+                        employment with excellent benefits. Due to time constraints, we're bypassing the usual interview
+                        process.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        Act now! Only 2 positions left. To demonstrate commitment, applicants must pay a refundable
+                        deposit of
+                        KES 3,500 for background check processing. This amount will be returned on your first payday.
+                        Don't delay -
+                        positions will be filled by end of day!
+                    </p>
+                </div>
+
+                <div class="job-requirements">
+                    <h4>Immediate Benefits:</h4>
+                    <ul>
+                        <li>Start immediately - no waiting period</li>
+                        <li>Guaranteed job offer upon payment</li>
+                        <li>No interview required</li>
+                        <li>High salary with bonuses</li>
+                        <li>Limited time offer - today only!</li>
+                    </ul>
+                </div>
+
+                <div class="contact-info">
+                    <strong>Apply RIGHT NOW:</strong><br>
+                    Send deposit of KES 3,500 to M-PESA 0756789012 with your name, then text me on 0767890123 to
+                    confirm.
+                    Hurry - last chance to apply before midnight! You can also reach us on Signal for instant
+                    confirmation.
+                </div>
+
+                <a href="#" class="apply-btn">Secure Position Now!</a>
+            </div>
+
+            <!-- LEGITIMATE JOB 2: Transparent and Professional -->
+            <div class="job-card legitimate">
+                <div class="job-header">
+                    <div>
+                        <h2 class="job-title">Marketing Manager</h2>
+                        <p class="company-name">GreenLeaf Marketing Agency</p>
+                    </div>
+                    <div>
+                        <span class="badge badge-verified">✓ Verified</span>
+                    </div>
+                </div>
+
+                <div class="job-meta">
+                    <span class="meta-item">💰 Salary: KES 90,000 - 130,000/month</span>
+                    <span class="meta-item">📍 Westlands, Nairobi</span>
+                    <span class="meta-item">⏰ Full-time</span>
+                </div>
+
+                <div class="job-description">
+                    <p>
+                        GreenLeaf Marketing Agency is looking for a creative and strategic Marketing Manager to lead our
+                        client campaigns.
+                        You will be responsible for developing marketing strategies, managing team members, and ensuring
+                        campaign success.
+                    </p>
+                    <p style="margin-top: 12px;">
+                        We offer a competitive salary, health insurance, professional development opportunities, and a
+                        collaborative
+                        work environment. This position reports to the Director of Client Services.
+                    </p>
+                </div>
+
+                <div class="job-requirements">
+                    <h4>Qualifications:</h4>
+                    <ul>
+                        <li>Bachelor's degree in Marketing, Business, or related field</li>
+                        <li>5+ years of marketing experience, 2+ in a management role</li>
+                        <li>Proven track record of successful campaigns</li>
+                        <li>Excellent communication and leadership skills</li>
+                        <li>Proficiency in digital marketing tools and analytics</li>
+                    </ul>
+                </div>
+
+                <div class="contact-info">
+                    <strong>How to Apply:</strong><br>
+                    Send your CV and cover letter to careers@greenleafagency.co.ke with "Marketing Manager Application"
+                    in the subject line.
+                    Application deadline: February 15, 2026. Only shortlisted candidates will be contacted.
+                    <br>Office: +254 20 1234567 | Website: www.greenleafagency.co.ke
+                </div>
+
+                <a href="#" class="apply-btn">Apply Online</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
