@@ -11,13 +11,28 @@
   // Map backend detected_patterns to words/phrases to highlight on the page.
   // Keys should match API response detected_patterns; values are case-insensitive match terms.
   const PATTERN_HIGHLIGHT_WORDS = {
-    'Payment Request': ['pay', 'fee', 'deposit', 'registration fee'],
-    'Urgency Manipulation': ['urgent', 'immediately', 'limited slots'],
-    'Urgency': ['urgent', 'immediately', 'limited slots'],
-    'Off-platform': ['WhatsApp', 'Telegram'],
-    'Off-Platform': ['WhatsApp', 'Telegram'],
-    'Free email': ['gmail.com', 'yahoo.com'],
-    'Free Email': ['gmail.com', 'yahoo.com']
+    // Message/Email patterns
+    'Payment Request': ['pay', 'fee', 'deposit', 'registration fee', 'application fee', 'processing fee'],
+    'Urgency Manipulation': ['urgent', 'immediately', 'limited slots', 'act now', 'limited time'],
+    'Urgency': ['urgent', 'immediately', 'limited slots', 'act now', 'limited time'],
+    'Off-platform': ['WhatsApp', 'Telegram', 'Signal', 'text me', 'call me'],
+    'Off-Platform': ['WhatsApp', 'Telegram', 'Signal', 'text me', 'call me'],
+    'Off-Platform Communication': ['WhatsApp', 'Telegram', 'Signal', 'text me', 'call me'],
+    'Free email': ['gmail.com', 'yahoo.com', 'hotmail.com'],
+    'Free Email': ['gmail.com', 'yahoo.com', 'hotmail.com'],
+    'Free Email Domain': ['gmail.com', 'yahoo.com', 'hotmail.com'],
+    'Unrealistic Job Promises': ['guaranteed income', 'no experience', 'easy money', 'work from home'],
+
+    // Website-specific patterns
+    'New Domain': [],  // Can't highlight on page, but included for completeness
+    'No HTTPS': [],
+    'No Contact Info': ['no contact', 'no address', 'no phone'],
+    'Payment Instructions': ['send money', 'wire transfer', 'MoneyGram', 'Western Union'],
+    'Domain Mismatch': [],
+
+    // Email-specific patterns
+    'Poor Grammar': ['mistakes', 'errors'],
+    'Unusual Formatting': []
   };
 
   const HIGHLIGHT_CLASS = 'jobshield-highlight';

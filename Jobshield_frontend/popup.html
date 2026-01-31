@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobShield</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="popup-header">
+      <h1>🛡️ JobShield</h1>
+      <p class="tagline">Advanced Job Scam Protection</p>
+    </header>
+
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+      <button class="tab-btn active" data-tab="job-post" aria-label="Analyze job post">
+        📄 Job Post
+      </button>
+      <button class="tab-btn" data-tab="link" aria-label="Analyze website link">
+        🔗 Link
+      </button>
+      <button class="tab-btn" data-tab="email" aria-label="Analyze email">
+        📧 Email
+      </button>
+    </div>
+
+    <!-- Tab Content Container -->
+    <div class="tab-content">
+      <!-- Tab 1: Job Post Analysis -->
+      <div class="tab-panel active" id="tab-job-post">
+        <div class="form-group">
+          <label for="jobMessageInput" class="form-label">Job Message</label>
+          <textarea id="jobMessageInput" class="form-textarea"
+            placeholder="Paste the job message here, or leave empty to analyze the current page..."
+            aria-label="Enter job message to analyze"></textarea>
+        </div>
+        <button type="button" class="analyze-btn" id="analyzeJobBtn" aria-label="Analyze job message">
+          <span id="analyzeJobBtnText">🔍 Analyze Job Message</span>
+          <span id="analyzeJobSpinner" class="spinner hidden" aria-hidden="true"></span>
+        </button>
+        <p style="font-size: 11px; color: var(--gray-600); margin-top: 8px; font-style: italic;">
+          💡 Tip: Leave the text area empty to automatically extract text from the current page.
+        </p>
+      </div>
+
+      <!-- Tab 2: Link Analysis -->
+      <div class="tab-panel" id="tab-link">
+        <div class="form-group">
+          <label for="linkInput" class="form-label">Website URL</label>
+          <input type="url" id="linkInput" class="form-input" placeholder="https://example-job-site.com"
+            aria-label="Enter website URL to analyze" />
+        </div>
+        <button type="button" class="primary-btn" id="analyzeLinkBtn" aria-label="Analyze website link">
+          <span id="analyzeLinkBtnText">🔍 Analyze Link</span>
+          <span id="analyzeLinkSpinner" class="spinner hidden" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- Tab 3: Email Analysis -->
+      <div class="tab-panel" id="tab-email">
+        <div class="form-group">
+          <label for="emailTextInput" class="form-label">Email Content</label>
+          <textarea id="emailTextInput" class="form-textarea" placeholder="Paste the email content here..."
+            aria-label="Enter email content to analyze"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="senderEmailInput" class="form-label">Sender Email Address</label>
+          <input type="email" id="senderEmailInput" class="form-input" placeholder="sender@example.com"
+            aria-label="Enter sender email address" />
+        </div>
+        <button type="button" class="primary-btn" id="analyzeEmailBtn" aria-label="Analyze email">
+          <span id="analyzeEmailBtnText">🔍 Analyze Email</span>
+          <span id="analyzeEmailSpinner" class="spinner hidden" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- Error message (shared across all tabs) -->
+      <div class="error-message" id="errorMessage" role="alert"></div>
+
+      <!-- Results (shared across all tabs) -->
+      <section class="results-panel" id="resultsPanel">
+        <!-- Risk level banner -->
+        <div class="risk-banner" id="riskBanner"></div>
+
+        <!-- Risk score -->
+        <div class="result-block">
+          <h3>📊 Risk Score</h3>
+          <p class="score-value" id="riskScore"></p>
+        </div>
+
+        <!-- Detected patterns -->
+        <div class="result-block">
+          <h3>🧠 Detected Scam Patterns</h3>
+          <ul class="patterns" id="detectedPatterns"></ul>
+        </div>
+
+        <!-- Explanation -->
+        <div class="result-block">
+          <h3>💬 Explanation</h3>
+          <p class="value explanation-box" id="explanation"></p>
+        </div>
+
+        <!-- Safety advice -->
+        <div class="result-block">
+          <h3>✅ Safety Advice</h3>
+          <p class="value advice-box" id="advice"></p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>
