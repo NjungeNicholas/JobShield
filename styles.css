@@ -1,0 +1,223 @@
+/**
+ * JobShield styles
+ * - Popup UI (loaded in popup.html)
+ * - On-page highlights (injected via content script)
+ */
+
+/* ========== On-page highlight (content script) ========== */
+.jobshield-highlight {
+  background-color: #fef08a;
+  border: 1px solid #dc2626;
+  border-radius: 2px;
+  padding: 0 2px;
+  cursor: help;
+}
+
+/* ========== Popup layout ========== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 360px;
+  min-height: 320px;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  color: #1f2937;
+  background: #f9fafb;
+}
+
+.popup-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ========== Header ========== */
+.popup-header {
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.popup-header h1 {
+  margin: 0 0 4px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.popup-header .tagline {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ========== Analyze button ========== */
+.analyze-section {
+  display: flex;
+  justify-content: center;
+}
+
+.analyze-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+  transition: background 0.2s, transform 0.05s;
+}
+
+.analyze-btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+.analyze-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.analyze-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: jobshield-spin 0.7s linear infinite;
+}
+
+@keyframes jobshield-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ========== Results panel ========== */
+.results-panel {
+  display: none;
+}
+
+.results-panel.visible {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Risk level banner - color coded */
+.risk-banner {
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.risk-banner.low {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
+}
+
+.risk-banner.medium {
+  background: #fef9c3;
+  color: #854d0e;
+  border-color: #fde047;
+}
+
+.risk-banner.high {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+/* Result blocks */
+.result-block {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+}
+
+.result-block h3 {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.result-block .value,
+.result-block .score-value {
+  margin: 0;
+  font-size: 14px;
+  color: #1f2937;
+  line-height: 1.5;
+}
+
+.result-block ul.patterns {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 14px;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+.result-block ul.patterns li {
+  margin-bottom: 4px;
+}
+
+.explanation-box,
+.advice-box {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.explanation-box {
+  background: #f3f4f6;
+  color: #374151;
+  border-left: 3px solid #9ca3af;
+}
+
+.advice-box {
+  background: #ecfdf5;
+  color: #065f46;
+  border-left: 3px solid #10b981;
+}
+
+/* Error state */
+.error-message {
+  padding: 12px;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 8px;
+  font-size: 13px;
+  display: none;
+}
+
+.error-message.visible {
+  display: block;
+}
+
+/* Hidden utility */
+.hidden {
+  display: none !important;
+}
